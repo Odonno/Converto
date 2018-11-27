@@ -54,12 +54,46 @@ namespace Converto
         public static T With<T, TProps>(this T itemToCopy, TProps propertiesToUpdate)
             where T : class where TProps : class
         {
-            // TODO
+            if (propertiesToUpdate == null)
+                return null;
+
+            var cachedTypeInfo = GetCachedTypeInfo(typeof(T));
+            var sourceReadProperties = cachedTypeInfo.Properties.Except(cachedTypeInfo.WriteOnlyProperties).ToList();
+            var updateProperties = typeof(TProps).GetRuntimeProperties().Where(x => x.CanRead).ToList();
+
+            var constructorToUse = ConstructorToUseForWith(cachedTypeInfo, updateProperties, sourceReadProperties);
+
+            if (constructorToUse == null)
+                return null;
+
+            var constructorParameters = constructorToUse.Parameters;
+            var constructorParameterValues = MapUpdateValuesToConstructorParameters(itemToCopy,
+                                                                                    propertiesToUpdate,
+                                                                                    constructorParameters,
+                                                                                    updateProperties,
+                                                                                    sourceReadProperties);
+
+            var destWriteProperties = cachedTypeInfo.Properties.Except(cachedTypeInfo.ReadOnlyProperties);
+            var propsToSetFromUpdateData = GetPropertiesToSetFromUpdateData(updateProperties,
+                                                                            constructorParameters,
+                                                                            sourceReadProperties);
+
+            var propsToSetFromSourceObject = GetPropertiesToSetFromSourceObject(sourceReadProperties,
+                                                                                constructorParameters,
+                                                                                propsToSetFromUpdateData,
+                                                                                destWriteProperties);
+
+            return CreateNewObjectApplyingUpdates(itemToCopy,
+                                                    propertiesToUpdate,
+                                                    constructorParameterValues,
+                                                    propsToSetFromSourceObject,
+                                                    propsToSetFromUpdateData);
         }
         public static bool TryWith<T, TProps>(this T itemToCopy, TProps propertiesToUpdate, out T result)
             where T : class where TProps : class
         {
-            // TODO
+            result = With(itemToCopy, propertiesToUpdate);
+            return result != null;
         }
 
         public static T ConvertTo<T>(this object @object) where T : class
@@ -104,6 +138,110 @@ namespace Converto
                                         .Where(x => x != null)
                                         .Select(sourceReadProperty => sourceReadProperty.GetValue(@object, null))
                                         .ToArray();
+        }
+
+        private static T CreateNewObjectApplyingUpdates<T, TProps>(
+            T itemToCopy,
+            TProps propertiesToUpdate,
+            object[] constructorParameterValues,
+            IEnumerable<PropertyInfo> propsToSetFromSourceObject,
+            IEnumerable<(PropertyInfo Value, PropertyInfo PropToUpdate)> propsToSetFromUpdateData
+        )
+            where T : class where TProps : class
+        {
+            var newObject = Activator.CreateInstance(typeof(T), constructorParameterValues) as T;
+
+            foreach (var propertyToOverwrite in propsToSetFromSourceObject)
+            {
+                CopyPropertyValue(itemToCopy, propertyToOverwrite, newObject);
+            }
+
+            foreach (var (sourceProp, propToUpdate) in propsToSetFromUpdateData)
+            {
+                CopyPropertyValue(propertiesToUpdate, propToUpdate, newObject, sourceProp);
+            }
+
+            return newObject;
+        }
+
+        private static List<PropertyInfo> GetPropertiesToSetFromSourceObject(
+            IEnumerable<PropertyInfo> sourceReadProperties,
+            List<ParameterInfo> constructorParameters,
+            List<(PropertyInfo Value, PropertyInfo PropToUpdate)> propsToSetFromUpdateData,
+            IEnumerable<PropertyInfo> destWriteProperties)
+        {
+            return sourceReadProperties
+                   .Where(p => !constructorParameters.Any(cp => AreLinked(cp, p)))
+                   .Where(p => !propsToSetFromUpdateData.Any(tp => AreLinked(p, tp.PropToUpdate)))
+                   .Select(sourceProperty =>
+                               destWriteProperties.FirstOrDefault(
+                                   destProperty => AreLinked(sourceProperty, destProperty)))
+                   .Where(x => x != null)
+                   .ToList();
+        }
+
+        private static List<(PropertyInfo Value, PropertyInfo PropToUpdate)> GetPropertiesToSetFromUpdateData(
+            IEnumerable<PropertyInfo> updateProperties,
+            List<ParameterInfo> constructorParameters,
+            List<PropertyInfo> sourceReadProperties)
+        {
+            return updateProperties
+                   .Where(p => !constructorParameters.Any(cp => AreLinked(cp, p)))
+                   .Select(propToUpdate =>
+                               (
+                               SourceProp: sourceReadProperties.FirstOrDefault(
+                                   sp => AreLinked(sp, propToUpdate)),
+                               PropToUpdate: propToUpdate
+                               )
+                   )
+                   .Where(x => x.SourceProp != null && x.SourceProp.CanWrite)
+                   .Select(x => (x.SourceProp, x.PropToUpdate)).ToList();
+        }
+
+        private static object[] MapUpdateValuesToConstructorParameters<T, TProps>(
+           T @object,
+           TProps propertiesToUpdate,
+           List<ParameterInfo> constructorParameters,
+           List<PropertyInfo> updateProperties,
+           List<PropertyInfo> sourceReadProperties
+        ) 
+            where T : class where TProps : class
+        {
+            return constructorParameters
+                   .Select(p =>
+                   {
+                       var updateProp = updateProperties.FirstOrDefault(ptu => AreLinked(ptu, p));
+                       if (updateProp != null)
+                       {
+                           return updateProp.GetValue(propertiesToUpdate, null);
+                       }
+
+                       var sourceProp = sourceReadProperties.FirstOrDefault(sp => AreLinked(sp, p));
+                       if (sourceProp != null)
+                       {
+                           return sourceProp.GetValue(@object, null);
+                       }
+
+                       return null;
+                   })
+                   .Where(x => x != null)
+                   .ToArray();
+        }
+
+        private static CachedConstructorInfo ConstructorToUseForWith(
+            CachedTypeInfo cachedTypeInfo,
+            IEnumerable<PropertyInfo> updateProperties,
+            IEnumerable<PropertyInfo> readProperties
+        )
+        {
+            return (from constructor in cachedTypeInfo.CachedPublicConstructors
+                    let paramsNotCoveredByUpdates =
+                        constructor.Parameters.Where(p => !updateProperties.Any(ptu => AreLinked(ptu, p)))
+                    let remainingParamsNotCoveredByProperties =
+                        paramsNotCoveredByUpdates.Where(p => !readProperties.Any(rp => AreLinked(rp, p))).ToList()
+                    where !remainingParamsNotCoveredByProperties.Any()
+                    orderby constructor.Parameters.Count descending
+                    select constructor).FirstOrDefault();
         }
 
         private static CachedTypeInfo GetCachedTypeInfo(Type type)
