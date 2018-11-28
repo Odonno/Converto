@@ -25,4 +25,23 @@ var newObject = newObjectOption.Value;
 
 ## With
 
+The `With` function allows you to create a new object by mutating some properties.
+
+```csharp
+var newObject = existingObject.With(new { Name = "Hello" });
+```
+
+```csharp
+if (existingObject.TryWith(new { Name = "Hello" }, out newObject))
+{
+}
+```
+
+### Using SuccincT library
+
+```csharp
+var newObjectOption = existingObject.TryWith(new { Name = "Hello" });
+var newObject = newObjectOption.Value;
+```
+
 ## ConvertTo
