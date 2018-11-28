@@ -45,3 +45,22 @@ var newObject = newObjectOption.Value;
 ```
 
 ## ConvertTo
+
+The `ConvertTo` function allows you to create an object of a different type using the matching properties of another object.
+
+```csharp
+var newObject = objectOfTypeA.ConvertTo<TypeB>();
+```
+
+```csharp
+if (objectOfTypeA.TryConvertTo<TypeB>(out newObject))
+{
+}
+```
+
+### Using SuccincT library
+
+```csharp
+var newObjectOption = objectOfTypeA.TryConvertTo<TypeB>();
+var newObject = newObjectOption.Value;
+```
