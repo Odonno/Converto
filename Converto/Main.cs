@@ -11,6 +11,12 @@ namespace Converto
         private static readonly Dictionary<string, CachedTypeInfo> CachedTypeInfoDetails =
             new Dictionary<string, CachedTypeInfo>();
 
+        /// <summary>
+        /// The Copy function allows you to strictly copy an object.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to copy.</typeparam>
+        /// <param name="object">Object to copy.</param>
+        /// <returns>Returns a copy of the object.</returns>
         public static T Copy<T>(this T @object) where T : class
         {
             var cachedTypeInfo = GetCachedTypeInfo(typeof(T));
@@ -45,13 +51,28 @@ namespace Converto
 
             return newObject;
         }
+        /// <summary>
+        /// The TryCopy function allows you to strictly copy an object.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to copy.</typeparam>
+        /// <param name="object">Object to copy.</param>
+        /// <param name="result">Returns the result of the function.</param>
+        /// <returns>Returns true if the Copy function succeed.</returns>
         public static bool TryCopy<T>(this T @object, out T result) where T : class
         {
             result = Copy(@object);
             return result != null;
         }
 
-        public static T With<T, TProps>(this T itemToCopy, TProps propertiesToUpdate)
+        /// <summary>
+        /// The With function allows you to create a new object by mutating some properties.
+        /// </summary>
+        /// <typeparam name="T">The type of the blueprint object.</typeparam>
+        /// <typeparam name="TProps">The type of the anonymous object of properties to update.</typeparam>
+        /// <param name="object">Blueprint object to use to create a new one.</param>
+        /// <param name="propertiesToUpdate">Anonymous object with a list of properties to update.</param>
+        /// <returns>Returns a new object from by mutating the properties of the origin object.</returns>
+        public static T With<T, TProps>(this T @object, TProps propertiesToUpdate)
             where T : class where TProps : class
         {
             if (propertiesToUpdate == null)
@@ -67,7 +88,7 @@ namespace Converto
                 return null;
 
             var constructorParameters = constructorToUse.Parameters;
-            var constructorParameterValues = MapUpdateValuesToConstructorParameters(itemToCopy,
+            var constructorParameterValues = MapUpdateValuesToConstructorParameters(@object,
                                                                                     propertiesToUpdate,
                                                                                     constructorParameters,
                                                                                     updateProperties,
@@ -83,19 +104,34 @@ namespace Converto
                                                                                 propsToSetFromUpdateData,
                                                                                 destWriteProperties);
 
-            return CreateNewObjectApplyingUpdates(itemToCopy,
+            return CreateNewObjectApplyingUpdates(@object,
                                                     propertiesToUpdate,
                                                     constructorParameterValues,
                                                     propsToSetFromSourceObject,
                                                     propsToSetFromUpdateData);
         }
-        public static bool TryWith<T, TProps>(this T itemToCopy, TProps propertiesToUpdate, out T result)
+        /// <summary>
+        /// The TryWith function allows you to create a new object by mutating some properties.
+        /// </summary>
+        /// <typeparam name="T">The type of the blueprint object.</typeparam>
+        /// <typeparam name="TProps">The type of the anonymous object of properties to update.</typeparam>
+        /// <param name="object">Blueprint object to use to create a new one.</param>
+        /// <param name="propertiesToUpdate">Anonymous object with a list of properties to update.</param>
+        /// <param name="result">Returns the result of the function.</param>
+        /// <returns>Returns true if the With function succeed.</returns>
+        public static bool TryWith<T, TProps>(this T @object, TProps propertiesToUpdate, out T result)
             where T : class where TProps : class
         {
-            result = With(itemToCopy, propertiesToUpdate);
+            result = With(@object, propertiesToUpdate);
             return result != null;
         }
 
+        /// <summary>
+        /// The ConvertTo function allows you to create an object of a different type using the matching properties of another object.
+        /// </summary>
+        /// <typeparam name="T">The type of the new object.</typeparam>
+        /// <param name="object">Blueprint object to use to convert to another type.</param>
+        /// <returns>Returns an object of a different type.</returns>
         public static T ConvertTo<T>(this object @object) where T : class
         {
             if (@object == null)
@@ -122,6 +158,13 @@ namespace Converto
 
             return (T)result;
         }
+        /// <summary>
+        /// The TryConvertTo function allows you to create an object of a different type using the matching properties of another object.
+        /// </summary>
+        /// <typeparam name="T">The type of the new object.</typeparam>
+        /// <param name="object">Blueprint object to use to convert to another type.</param>
+        /// <param name="result">Returns the result of the function.</param>
+        /// <returns>Returns true if the ConvertTo function succeed.</returns>
         public static bool TryConvertTo<T>(this object @object, out T result) where T : class
         {
             result = ConvertTo<T>(@object);
