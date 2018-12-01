@@ -149,7 +149,7 @@ namespace Converto
             var objectTypeInfo = GetCachedTypeInfo(@object.GetType());
             var targetTypeInfo = GetCachedTypeInfo(typeof(T));
 
-            var result = Activator.CreateInstance(objectTypeInfo.Type, false);
+            var result = Activator.CreateInstance(targetTypeInfo.Type, false);
 
             var targetPropertiesInfo = targetTypeInfo.Properties.Where(p => p.CanWrite);
 
