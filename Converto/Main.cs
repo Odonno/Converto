@@ -19,6 +19,9 @@ namespace Converto
         /// <returns>Returns a copy of the object.</returns>
         public static T Copy<T>(this T @object) where T : class
         {
+            if (@object == null)
+                return default(T);
+
             var cachedTypeInfo = GetCachedTypeInfo(typeof(T));
 
             var cachePublicConstructor = cachedTypeInfo.CachedPublicConstructors
@@ -75,6 +78,9 @@ namespace Converto
         public static T With<T, TProps>(this T @object, TProps propertiesToUpdate)
             where T : class where TProps : class
         {
+            if (@object == null)
+                return default(T);
+
             if (propertiesToUpdate == null)
                 return null;
 
