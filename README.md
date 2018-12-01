@@ -2,7 +2,9 @@
 
 Converto is a C# library which gives you basic functions for type conversion and object transformation.
 
-## Copy
+## Getting started
+
+### Copy
 
 The `Copy` function allows you to strictly copy an object.
 
@@ -16,14 +18,14 @@ if (existingObject.TryCopy(out newObject))
 }
 ```
 
-### Using SuccincT library
+#### Using SuccincT library
 
 ```csharp
 var newObjectOption = existingObject.TryCopy();
 var newObject = newObjectOption.Value;
 ```
 
-## With
+### With
 
 The `With` function allows you to create a new object by mutating some properties.
 
@@ -37,14 +39,14 @@ if (existingObject.TryWith(new { Name = "Hello" }, out newObject))
 }
 ```
 
-### Using SuccincT library
+#### Using SuccincT library
 
 ```csharp
 var newObjectOption = existingObject.TryWith(new { Name = "Hello" });
 var newObject = newObjectOption.Value;
 ```
 
-## ConvertTo
+### ConvertTo
 
 The `ConvertTo` function allows you to create an object of a different type using the matching properties of another object.
 
@@ -58,7 +60,7 @@ if (objectOfTypeA.TryConvertTo<TypeB>(out newObject))
 }
 ```
 
-### Using SuccincT library
+#### Using SuccincT library
 
 ```csharp
 var newObjectOption = objectOfTypeA.TryConvertTo<TypeB>();
