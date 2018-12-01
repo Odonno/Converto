@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Converto.SuccincT</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>David Bottiau</Authors>
+    <Description>A C# library which gives you basic functions for type conversion and object transformation</Description>
+    <Company />
+    <PackageProjectUrl>https://github.com/Odonno/Converto</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Odonno/Converto</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
