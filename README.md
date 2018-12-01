@@ -1,5 +1,10 @@
 # Converto
 
+| Package           | NuGet                                                                                                         |
+|-------------------|---------------------------------------------------------------------------------------------------------------|
+| Converto          | [![NuGet](https://img.shields.io/nuget/v/Converto.svg)](https://www.nuget.org/packages/Converto/)                 |
+| Converto.SuccincT | [![NuGet](https://img.shields.io/nuget/v/Converto.SuccincT.svg)](https://www.nuget.org/packages/Converto.SuccincT/) |
+
 Converto is a C# library which gives you basic functions for type conversion and object transformation.
 
 ## Getting started
