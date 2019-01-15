@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,8 +9,8 @@ namespace Converto
 {
     public static class Main
     {
-        private static readonly Dictionary<string, CachedTypeInfo> CachedTypeInfoDetails =
-            new Dictionary<string, CachedTypeInfo>();
+        private static readonly ConcurrentDictionary<string, CachedTypeInfo> CachedTypeInfoDetails =
+            new ConcurrentDictionary<string, CachedTypeInfo>();
 
         /// <summary>
         /// The Copy function allows you to strictly copy an object.
@@ -294,7 +295,7 @@ namespace Converto
         }
 
         private static CachedTypeInfo GetCachedTypeInfo(Type type)
-            => CachedTypeInfoDetails.GetOrAddValue(type.FullName, () => new CachedTypeInfo(type));
+            => CachedTypeInfoDetails.GetOrAdd(type.FullName, _ => new CachedTypeInfo(type));
 
         private static T GetOrAddValue<T>(this Dictionary<string, T> dictionary, string key, Func<T> createValue)
         {
