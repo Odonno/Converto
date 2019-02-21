@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Converto.SuccincT</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <Authors>David Bottiau</Authors>
     <Description>A C# library which gives you basic functions for type conversion and object transformation</Description>
     <Company />

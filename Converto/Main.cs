@@ -178,6 +178,45 @@ namespace Converto
             return result != null;
         }
 
+        /// <summary>
+        /// The IsEqual function detects if two objects have strictly the same properties (not necessarily the same object).
+        /// </summary>
+        /// <typeparam name="T">The type of objects that are compared.</typeparam>
+        /// <param name="x">First object to compare.</param>
+        /// <param name="y">Second object to compare.</param>
+        /// <returns>Returns true if all properties of the object are the same.</returns>
+        public static bool IsEqual<T>(T x, T y) where T : class
+        {
+            if (x == null && y == null)
+                return true;
+
+            if (x == null || y == null)
+                return false;
+
+            var properties = GetCachedTypeInfo(typeof(T))
+                .Properties
+                .Where(p => p.CanRead && p.CanWrite);
+
+            foreach (var property in properties)
+            {
+                var leftValue = property.GetValue(x, null);
+                var rightValue = property.GetValue(y, null);
+
+                if (property.PropertyType.IsClass && property.PropertyType.IsNested)
+                {
+                    if (!IsEqual(leftValue, rightValue))
+                        return false;
+                }
+                else
+                {
+                    if (leftValue != rightValue)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         private static object[] GetConstructorParameterValuesForCopy<T>(
             T @object,
             IEnumerable<PropertyInfo> sourceReadProperties,
@@ -296,18 +335,6 @@ namespace Converto
 
         private static CachedTypeInfo GetCachedTypeInfo(Type type)
             => CachedTypeInfoDetails.GetOrAdd(type.FullName, _ => new CachedTypeInfo(type));
-
-        private static T GetOrAddValue<T>(this Dictionary<string, T> dictionary, string key, Func<T> createValue)
-        {
-            if (dictionary.TryGetValue(key, out T value))
-            {
-                return value;
-            }
-
-            value = createValue();
-            dictionary.Add(key, value);
-            return value;
-        }
 
         private static bool AreLinked(MemberInfo memberInfo, ParameterInfo parameterInfo) =>
             string.Equals(memberInfo.Name, parameterInfo.Name, StringComparison.CurrentCultureIgnoreCase);

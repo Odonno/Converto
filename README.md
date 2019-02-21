@@ -71,3 +71,11 @@ if (objectOfTypeA.TryConvertTo<TypeB>(out newObject))
 var newObjectOption = objectOfTypeA.TryConvertTo<TypeB>();
 var newObject = newObjectOption.Value;
 ```
+
+### IsEqual
+
+The `IsEqual` function detects if two objects have strictly the same properties (not necessarily the same object).
+
+```csharp
+bool isEqual = IsEqual(object1, object2);
+```
