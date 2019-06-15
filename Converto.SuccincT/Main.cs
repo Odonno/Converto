@@ -39,5 +39,19 @@ namespace Converto.SuccincT
         {
             return @object.ConvertTo<T>().ToOption();
         }
+
+        /// <summary>
+        /// The TryConvertWith function combines the ConvertTo and the With functions in this order.
+        /// </summary>
+        /// <typeparam name="T">The type of the new object.</typeparam>
+        /// <typeparam name="TProps">The type of the anonymous object of properties to update.</typeparam>
+        /// <param name="object">Object to copy.</param>
+        /// <param name="propertiesToUpdate">Anonymous object with a list of properties to update.</param>
+        /// <returns>Returns a new object of a different type and mutate its properties.</returns>
+        public static Option<T> TryConvertWith<T, TProps>(this object @object, TProps propertiesToUpdate)
+            where T : class where TProps : class
+        {
+            return @object.ConvertWith<T, TProps>(propertiesToUpdate).ToOption();
+        }
     }
 }

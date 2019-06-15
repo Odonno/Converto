@@ -179,6 +179,39 @@ namespace Converto
         }
 
         /// <summary>
+        /// The ConvertWith function combines the ConvertTo and the With functions in this order.
+        /// </summary>
+        /// <typeparam name="T">The type of the new object.</typeparam>
+        /// <typeparam name="TProps">The type of the anonymous object of properties to update.</typeparam>
+        /// <param name="object">Blueprint object to use to convert to another type.</param>
+        /// <param name="propertiesToUpdate">Anonymous object with a list of properties to update.</param>
+        /// <returns>Returns an object of a different type and mutate its properties.</returns>
+        public static T ConvertWith<T, TProps>(this object @object, TProps propertiesToUpdate)
+            where T : class where TProps : class
+        {
+            return @object.ConvertTo<T>().With(propertiesToUpdate);
+        }
+        /// <summary>
+        /// The TryConvertWith function combines the ConvertTo and the With functions in this order.
+        /// </summary>
+        /// <typeparam name="T">The type of the new object.</typeparam>
+        /// <typeparam name="TProps">The type of the anonymous object of properties to update.</typeparam>
+        /// <param name="object">Blueprint object to use to convert to another type.</param>
+        /// <param name="propertiesToUpdate">Anonymous object with a list of properties to update.</param>
+        /// <param name="result">Returns the result of the function.</param>
+        /// <returns>Returns an object of a different type and mutate its properties.</returns>
+        public static bool TryConvertWith<T, TProps>(this object @object, TProps propertiesToUpdate, out T result)
+            where T : class where TProps : class
+        {
+            result = @object.ConvertTo<T>();
+            if (result == null)
+                return false;
+
+            result = result.With(propertiesToUpdate);
+            return result != null;
+        }
+
+        /// <summary>
         /// The IsEqual function detects if two objects have strictly the same properties (not necessarily the same object).
         /// </summary>
         /// <typeparam name="T">The type of objects that are compared.</typeparam>
@@ -293,7 +326,7 @@ namespace Converto
            List<ParameterInfo> constructorParameters,
            List<PropertyInfo> updateProperties,
            List<PropertyInfo> sourceReadProperties
-        ) 
+        )
             where T : class where TProps : class
         {
             return constructorParameters
@@ -351,7 +384,7 @@ namespace Converto
         private static void CopyPropertyValue<T1, T2>(
             T1 from, PropertyInfo fromProperty,
             T2 to, PropertyInfo toProperty
-        ) 
+        )
             where T1 : class where T2 : class
         {
             toProperty.SetValue(to, fromProperty.GetValue(from, null));

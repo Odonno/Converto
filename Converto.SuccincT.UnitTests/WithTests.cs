@@ -36,7 +36,7 @@ namespace Converto.SuccincT.UnitTests
             };
 
             // Act
-            var result = car.TryWith<Car, EmptyProps>(null);
+            var result = car.TryWith(null as EmptyProps);
 
             // Assert
             Assert.False(result.HasValue);
