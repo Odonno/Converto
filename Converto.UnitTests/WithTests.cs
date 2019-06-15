@@ -49,7 +49,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            var result = car.With<Car, EmptyProps>(null);
+            var result = car.With(null as EmptyProps);
 
             // Assert
             Assert.Null(result);
@@ -65,7 +65,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            var canWith = car.TryWith<Car, EmptyProps>(null, out var result);
+            var canWith = car.TryWith(null as EmptyProps, out var result);
 
             // Assert
             Assert.False(canWith);
