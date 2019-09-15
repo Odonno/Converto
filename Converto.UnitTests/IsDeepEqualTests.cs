@@ -3,7 +3,7 @@ using static Converto.Main;
 
 namespace Converto.UnitTests
 {
-    public class IsEqualTests
+    public class IsDeepEqualTests
     {
         public class Car
         {
@@ -26,7 +26,7 @@ namespace Converto.UnitTests
             Car car2 = null;
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.True(result);
@@ -44,7 +44,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.False(result);
@@ -66,7 +66,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.True(result);
@@ -88,7 +88,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.False(result);
@@ -120,7 +120,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.True(result);
@@ -152,7 +152,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsEqual(car1, car2);
+            bool result = IsDeepEqual(car1, car2);
 
             // Assert
             Assert.False(result);
