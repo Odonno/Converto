@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Converto</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>David Bottiau</Authors>
     <Description>A C# library which gives you basic functions for type conversion and object transformation</Description>
     <Company />
     <PackageProjectUrl>https://github.com/Odonno/Converto</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Odonno/Converto</RepositoryUrl>
+    <PackageTags>Copy With ConvertTo IsDeepEqual Functional</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,18 +5,6 @@ using System.Reflection;
 
 namespace Converto
 {
-    internal class CachedConstructorInfo
-    {
-        public ConstructorInfo Constructor { get; }
-        public List<ParameterInfo> Parameters { get; }
-
-        public CachedConstructorInfo(ConstructorInfo constructorInfo)
-        {
-            Constructor = constructorInfo;
-            Parameters = constructorInfo.GetParameters().ToList();
-        }
-    }
-
     internal class CachedTypeInfo
     {
         public Type Type { get; }
