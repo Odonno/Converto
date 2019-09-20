@@ -11,7 +11,7 @@ namespace Converto
         private static readonly ConcurrentDictionary<string, CachedTypeInfo> _cachedTypeInfoDetails =
             new ConcurrentDictionary<string, CachedTypeInfo>();
 
-        private static object[] GetConstructorParameterValuesForCopy<T>(
+        private static object[] GetConstructorParameterValuesFromObject<T>(
             T @object,
             IEnumerable<PropertyInfo> sourceReadProperties,
             IEnumerable<ParameterInfo> constructorParameters
@@ -20,6 +20,27 @@ namespace Converto
             return constructorParameters.Select(p => sourceReadProperties.FirstOrDefault(x => AreLinked(x, p)))
                                         .Where(x => x != null)
                                         .Select(sourceReadProperty => sourceReadProperty.GetValue(@object, null))
+                                        .ToArray();
+        }
+        private static object[] GetConstructorParameterValuesFromDictionary<T>(
+            Dictionary<string, object> dictionary,
+            IEnumerable<PropertyInfo> sourceReadProperties,
+            IEnumerable<ParameterInfo> constructorParameters
+        )
+        {
+            return constructorParameters.Select(p => sourceReadProperties.FirstOrDefault(x => AreLinked(x, p)))
+                                        .Where(x => x != null)
+                                        .Select(sourceReadProperty =>
+                                        {
+                                            if (dictionary.ContainsKey(sourceReadProperty.Name))
+                                            {
+                                                return dictionary[sourceReadProperty.Name];
+                                            }
+
+                                            return sourceReadProperty.PropertyType.IsValueType 
+                                                ? Activator.CreateInstance(sourceReadProperty.PropertyType)
+                                                : null;
+                                        })
                                         .ToArray();
         }
 

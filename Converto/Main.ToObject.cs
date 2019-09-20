@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Converto
@@ -6,14 +7,14 @@ namespace Converto
     public static partial class Main
     {
         /// <summary>
-        /// The Copy function allows you to strictly copy an object.
+        /// Create an object from the specified dictionary.
         /// </summary>
-        /// <typeparam name="T">The type of the object to copy.</typeparam>
-        /// <param name="object">Object to copy.</param>
-        /// <returns>Returns a copy of the object.</returns>
-        public static T Copy<T>(this T @object) where T : class
+        /// <typeparam name="T">The type of the object to create.</typeparam>
+        /// <param name="dictionary">The dictionary of key/value pairs to become the properties of the object.</param>
+        /// <returns>Returns a new object filled with properties from the dictionary.</returns>
+		public static T ToObject<T>(this Dictionary<string, object> dictionary) where T : class
         {
-            if (@object == null)
+            if (dictionary == null)
                 return default;
 
             var cachedTypeInfo = GetCachedTypeInfo(typeof(T));
@@ -29,7 +30,7 @@ namespace Converto
             var constructorParameters = cachePublicConstructor.Parameters;
 
             var constructorParameterValues =
-                GetConstructorParameterValuesFromObject(@object, sourceReadProperties, constructorParameters);
+                GetConstructorParameterValuesFromDictionary<T>(dictionary, sourceReadProperties, constructorParameters);
 
             if (constructorParameterValues.Length != constructorParameters.Count)
                 return null;
@@ -43,21 +44,27 @@ namespace Converto
 
             foreach (var propertyToOverwrite in propertiesToOverwrite)
             {
-                CopyPropertyValue(@object, propertyToOverwrite, newObject);
+                if (dictionary.ContainsKey(propertyToOverwrite.Name))
+                {
+                    propertyToOverwrite.SetValue(
+                        newObject,
+                        dictionary[propertyToOverwrite.Name]
+                    );
+                }
             }
 
             return newObject;
         }
         /// <summary>
-        /// The TryCopy function allows you to strictly copy an object.
+        /// Create an object from the specified dictionary.
         /// </summary>
-        /// <typeparam name="T">The type of the object to copy.</typeparam>
-        /// <param name="object">Object to copy.</param>
+        /// <typeparam name="T">The type of the object to create.</typeparam>
+        /// <param name="dictionary">The dictionary of key/value pairs to become the properties of the object.</param>
         /// <param name="result">Returns the result of the function.</param>
-        /// <returns>Returns true if the Copy function succeed.</returns>
-        public static bool TryCopy<T>(this T @object, out T result) where T : class
+        /// <returns>Returns true if the ToObject function succeed.</returns>
+        public static bool TryToObject<T>(this Dictionary<string, object> dictionary, out T result) where T : class
         {
-            result = Copy(@object);
+            result = dictionary.ToObject<T>();
             return result != null;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using SuccincT.Options;
+using System.Collections.Generic;
 
 namespace Converto.SuccincT
 {
@@ -38,6 +39,17 @@ namespace Converto.SuccincT
         public static Option<T> TryConvertTo<T>(this object @object) where T : class
         {
             return @object.ConvertTo<T>().ToOption();
+        }
+
+        /// <summary>
+        /// The TryToObject function allows you to create an object from the specified dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to create.</typeparam>
+        /// <param name="dictionary">The dictionary of key/value pairs to become the properties of the object.</param>
+        /// <returns>Returns a new object filled with properties from the dictionary.</returns>
+        public static Option<T> TryToObject<T>(this Dictionary<string, object> dictionary) where T : class
+        {
+            return dictionary.ToObject<T>().ToOption();
         }
     }
 }
