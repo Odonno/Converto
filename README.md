@@ -79,3 +79,26 @@ The `IsDeepEqual` function detects if two objects have strictly the same propert
 ```csharp
 bool isDeepEqual = IsDeepEqual(object1, object2);
 ```
+
+### ToDictionary
+
+The `ToDictionary` allows you to create a dictionary from an object.
+
+```csharp
+var newDictionary = existingObject.ToDictionary();
+```
+
+### ToObject
+
+The `ToObject` allows you to create an object from a dictionary.
+
+```csharp
+var newObjectOfTypeA = existingDictionary.ToObject<TypeA>();
+```
+
+#### Using SuccincT library
+
+```csharp
+var newObjectOption = existingDictionary.TryToObject<TypeA>();
+var newObject = newObjectOption.Value;
+```
