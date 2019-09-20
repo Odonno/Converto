@@ -7,9 +7,11 @@
 
 Converto is a C# library which gives you basic functions for type conversion and object transformation.
 
-## Getting started
+## Functions
 
-### Copy
+<details>
+<summary>Copy</summary>
+<br>
 
 The `Copy` function allows you to strictly copy an object.
 
@@ -30,7 +32,11 @@ var newObjectOption = existingObject.TryCopy();
 var newObject = newObjectOption.Value;
 ```
 
-### With
+</details>
+
+<details>
+<summary>With</summary>
+<br>
 
 The `With` function allows you to create a new object by mutating some properties.
 
@@ -51,7 +57,11 @@ var newObjectOption = existingObject.TryWith(new { Name = "Hello" });
 var newObject = newObjectOption.Value;
 ```
 
-### ConvertTo
+</details>
+
+<details>
+<summary>ConvertTo</summary>
+<br>
 
 The `ConvertTo` function allows you to create an object of a different type using the matching properties of another object.
 
@@ -72,7 +82,11 @@ var newObjectOption = objectOfTypeA.TryConvertTo<TypeB>();
 var newObject = newObjectOption.Value;
 ```
 
-### IsDeepEqual
+</details>
+
+<details>
+<summary>IsDeepEqual</summary>
+<br>
 
 The `IsDeepEqual` function detects if two objects have strictly the same properties (not necessarily the same object).
 
@@ -80,7 +94,11 @@ The `IsDeepEqual` function detects if two objects have strictly the same propert
 bool isDeepEqual = IsDeepEqual(object1, object2);
 ```
 
-### ToDictionary
+</details>
+
+<details>
+<summary>ToDictionary</summary>
+<br>
 
 The `ToDictionary` allows you to create a dictionary from an object.
 
@@ -88,7 +106,11 @@ The `ToDictionary` allows you to create a dictionary from an object.
 var newDictionary = existingObject.ToDictionary();
 ```
 
-### ToObject
+</details>
+
+<details>
+<summary>ToObject</summary>
+<br>
 
 The `ToObject` allows you to create an object from a dictionary.
 
