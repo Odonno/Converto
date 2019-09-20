@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Converto.SuccincT</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Authors>David Bottiau</Authors>
     <Description>A C# library which gives you basic functions for type conversion and object transformation</Description>
     <Company />
     <PackageProjectUrl>https://github.com/Odonno/Converto</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Odonno/Converto</RepositoryUrl>
-    <PackageTags>Copy With ConvertTo IsDeepEqual Functional</PackageTags>
+    <PackageTags>Copy With ConvertTo IsDeepEqual ToObject ToDictionary Functional</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
