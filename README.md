@@ -1,5 +1,7 @@
 # Converto
 
+[![CodeFactor](https://www.codefactor.io/repository/github/odonno/converto/badge)](https://www.codefactor.io/repository/github/odonno/converto)
+
 | Package           | NuGet                                                                                                         |
 |-------------------|---------------------------------------------------------------------------------------------------------------|
 | Converto          | [![NuGet](https://img.shields.io/nuget/v/Converto.svg)](https://www.nuget.org/packages/Converto/)                 |
