@@ -8,7 +8,7 @@ namespace Converto
 {
     public static partial class Main
     {
-        private static readonly ConcurrentDictionary<string, CachedTypeInfo> CachedTypeInfoDetails =
+        private static readonly ConcurrentDictionary<string, CachedTypeInfo> _cachedTypeInfoDetails =
             new ConcurrentDictionary<string, CachedTypeInfo>();
 
         private static object[] GetConstructorParameterValuesForCopy<T>(
@@ -128,7 +128,7 @@ namespace Converto
         }
 
         private static CachedTypeInfo GetCachedTypeInfo(Type type)
-            => CachedTypeInfoDetails.GetOrAdd(type.FullName, _ => new CachedTypeInfo(type));
+            => _cachedTypeInfoDetails.GetOrAdd(type.FullName, _ => new CachedTypeInfo(type));
 
         private static bool AreLinked(MemberInfo memberInfo, ParameterInfo parameterInfo) =>
             string.Equals(memberInfo.Name, parameterInfo.Name, StringComparison.CurrentCultureIgnoreCase);

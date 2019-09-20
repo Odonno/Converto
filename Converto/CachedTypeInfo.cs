@@ -10,8 +10,10 @@ namespace Converto
         public Type Type { get; }
         public List<CachedConstructorInfo> CachedPublicConstructors { get; }
         public List<PropertyInfo> Properties { get; }
+        public List<PropertyInfo> ReadableProperties { get; }
         public List<PropertyInfo> ReadOnlyProperties { get; }
         public List<PropertyInfo> WriteOnlyProperties { get; }
+        public List<PropertyInfo> WritableProperties { get; }
 
         public CachedTypeInfo(Type type)
         {
@@ -26,8 +28,10 @@ namespace Converto
                                       .Where(cc => cc.Constructor.IsPublic && !cc.Constructor.IsStatic).ToList();
 
             Properties = type.GetRuntimeProperties().ToList();
-            ReadOnlyProperties = Properties.Where(p => p.CanRead && !p.CanWrite).ToList();
-            WriteOnlyProperties = Properties.Where(p => !p.CanRead && p.CanWrite).ToList();
+            ReadableProperties = Properties.Where(p => p.CanRead).ToList();
+            ReadOnlyProperties = ReadableProperties.Where(p => !p.CanWrite).ToList();
+            WritableProperties = Properties.Where(p => p.CanWrite).ToList();
+            WriteOnlyProperties = WritableProperties.Where(p => !p.CanRead).ToList();
         }
     }
 }
