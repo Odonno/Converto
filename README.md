@@ -100,7 +100,7 @@ bool isDeepEqual = IsDeepEqual(object1, object2);
 <summary>ToDictionary</summary>
 <br>
 
-The `ToDictionary` allows you to create a dictionary from an object.
+The `ToDictionary` function allows you to create a dictionary from an object.
 
 ```csharp
 var newDictionary = existingObject.ToDictionary();
@@ -112,7 +112,7 @@ var newDictionary = existingObject.ToDictionary();
 <summary>ToObject</summary>
 <br>
 
-The `ToObject` allows you to create an object from a dictionary.
+The `ToObject` function allows you to create an object from a dictionary.
 
 ```csharp
 var newObjectOfTypeA = existingDictionary.ToObject<TypeA>();
