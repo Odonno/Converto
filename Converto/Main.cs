@@ -22,7 +22,7 @@ namespace Converto
                                         .Select(sourceReadProperty => sourceReadProperty.GetValue(@object, null))
                                         .ToArray();
         }
-        private static object[] GetConstructorParameterValuesFromDictionary<T>(
+        private static object[] GetConstructorParameterValuesFromDictionary(
             Dictionary<string, object> dictionary,
             IEnumerable<PropertyInfo> sourceReadProperties,
             IEnumerable<ParameterInfo> constructorParameters

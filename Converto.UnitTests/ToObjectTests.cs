@@ -60,5 +60,33 @@ namespace Converto.UnitTests
             Assert.Null(result.Color);
             Assert.Same(owner, result.Owner);
         }
+
+        [Fact]
+        public void ADictionary_Returns_ANewComplexObjectInRecursiveMode()
+        {
+            // Arrange
+            var ownerDictionary = new Dictionary<string, object>
+            {
+                { "FirstName", "Freddy" },
+                { "LastName", "Mercury" }
+            };
+
+            var dictionary = new Dictionary<string, object>
+            {
+                { "Name", "Name of the car" },
+                { "Owner", ownerDictionary }
+            };
+
+            // Act
+            var result = dictionary.ToObject<Car>(true);
+
+            // Assert
+            Assert.Equal("Name of the car", result.Name);
+            Assert.Null(result.Color);
+
+            Assert.NotNull(result.Owner);
+            Assert.Equal("Freddy", result.Owner.FirstName);
+            Assert.Equal("Mercury", result.Owner.LastName);
+        }
     }
 }

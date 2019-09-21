@@ -46,10 +46,11 @@ namespace Converto.SuccincT
         /// </summary>
         /// <typeparam name="T">The type of the object to create.</typeparam>
         /// <param name="dictionary">The dictionary of key/value pairs to become the properties of the object.</param>
+        /// <param name="recursive">Indicates if we convert nested dictionary in object recursively.</param>
         /// <returns>Returns a new object filled with properties from the dictionary.</returns>
-        public static Option<T> TryToObject<T>(this Dictionary<string, object> dictionary) where T : class
+        public static Option<T> TryToObject<T>(this Dictionary<string, object> dictionary, bool recursive = false) where T : class
         {
-            return dictionary.ToObject<T>().ToOption();
+            return dictionary.ToObject<T>(recursive).ToOption();
         }
     }
 }

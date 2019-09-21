@@ -36,23 +36,23 @@ namespace Converto
                     if (hasNestedDictionary)
                     {
                         result.Add(
-                           property.Name,
-                           ToDictionary(property.GetValue(@object), property.PropertyType, true)
+                            property.Name,
+                            ToDictionary(property.GetValue(@object), property.PropertyType, true)
                         );
                     }
                     else
                     {
                         result.Add(
-                           property.Name,
-                           property.GetValue(@object)
+                            property.Name,
+                            property.GetValue(@object)
                         );
                     }
                 }
                 else
                 {
                     result.Add(
-                       property.Name,
-                       property.GetValue(@object)
+                        property.Name,
+                        property.GetValue(@object)
                     );
                 }
             }
