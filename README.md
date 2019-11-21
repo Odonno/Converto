@@ -93,7 +93,7 @@ var newObject = newObjectOption.Value;
 The `IsDeepEqual` function detects if two objects have strictly the same properties (not necessarily the same object).
 
 ```csharp
-bool isDeepEqual = IsDeepEqual(object1, object2);
+bool isDeepEqual = object1.IsDeepEqual(object2);
 ```
 
 </details>

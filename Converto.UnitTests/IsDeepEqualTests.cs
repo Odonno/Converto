@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using static Converto.Main;
 
 namespace Converto.UnitTests
 {
@@ -26,7 +25,7 @@ namespace Converto.UnitTests
             Car car2 = null;
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.True(result);
@@ -44,7 +43,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.False(result);
@@ -66,7 +65,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.True(result);
@@ -88,7 +87,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.False(result);
@@ -120,7 +119,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.True(result);
@@ -152,7 +151,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.False(result);
@@ -166,7 +165,7 @@ namespace Converto.UnitTests
             string str2 = "beta";
 
             // Act
-            bool result = IsDeepEqual(str1, str2);
+            bool result = str1.IsDeepEqual(str2);
 
             // Assert
             Assert.False(result);
@@ -188,7 +187,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.True(result);
@@ -210,7 +209,7 @@ namespace Converto.UnitTests
             };
 
             // Act
-            bool result = IsDeepEqual(car1, car2);
+            bool result = car1.IsDeepEqual(car2);
 
             // Assert
             Assert.False(result);
