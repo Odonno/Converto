@@ -171,5 +171,49 @@ namespace Converto.UnitTests
             // Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public void TwoAnonymousTypesWithSameProperties_Returns_True()
+        {
+            // Arrange
+            var car1 = new
+            {
+                Name = "Name of the car",
+                Color = "Red"
+            };
+            var car2 = new
+            {
+                Name = "Name of the car",
+                Color = "Red"
+            };
+
+            // Act
+            bool result = IsDeepEqual(car1, car2);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoAnonymousTypesWithDifferentProperties_Returns_False()
+        {
+            // Arrange
+            var car1 = new
+            {
+                Name = "Name of the car",
+                Color = "Red"
+            };
+            var car2 = new
+            {
+                Name = "Name of the car",
+                Color = "Blue"
+            };
+
+            // Act
+            bool result = IsDeepEqual(car1, car2);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 }

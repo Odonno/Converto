@@ -34,7 +34,7 @@ namespace Converto
 
             var properties = cachedType
                 .Properties
-                .Where(p => p.CanRead && p.CanWrite);
+                .Where(p => p.CanRead);
 
             foreach (var property in properties)
             {
