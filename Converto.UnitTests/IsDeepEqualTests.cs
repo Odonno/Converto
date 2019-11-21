@@ -262,5 +262,39 @@ namespace Converto.UnitTests
             // Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public void TwoUnboxedAndIdenticalStrings_Returns_True()
+        {
+            // Arrange
+            object o1 = "alpha";
+            object o2 = "alpha";
+
+            string str1 = (string)o1;
+            string str2 = (string)o2;
+
+            // Act
+            bool result = str1.IsDeepEqual(str2);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoUnboxedAndDifferentStrings_Returns_False()
+        {
+            // Arrange
+            object o1 = "alpha";
+            object o2 = "beta";
+
+            string str1 = (string)o1;
+            string str2 = (string)o2;
+
+            // Act
+            bool result = str1.IsDeepEqual(str2);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 }
