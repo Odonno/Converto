@@ -22,12 +22,7 @@ namespace Converto
 
             var cachedType = GetCachedTypeInfo(typeof(T));
 
-            bool isPrimitiveType = 
-                cachedType.Type.IsPrimitive || 
-                cachedType.Type.IsValueType || 
-                (cachedType.Type == typeof(string));
-
-            if (isPrimitiveType)
+            if (x is IEquatable<T>)
             {
                 return x.Equals(y);
             }
