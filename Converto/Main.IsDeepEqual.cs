@@ -20,7 +20,19 @@ namespace Converto
             if (x == null || y == null)
                 return false;
 
-            var properties = GetCachedTypeInfo(typeof(T))
+            var cachedType = GetCachedTypeInfo(typeof(T));
+
+            bool isPrimitiveType = 
+                cachedType.Type.IsPrimitive || 
+                cachedType.Type.IsValueType || 
+                (cachedType.Type == typeof(string));
+
+            if (isPrimitiveType)
+            {
+                return x.Equals(y);
+            }
+
+            var properties = cachedType
                 .Properties
                 .Where(p => p.CanRead && p.CanWrite);
 

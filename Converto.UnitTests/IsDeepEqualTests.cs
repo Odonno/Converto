@@ -157,5 +157,19 @@ namespace Converto.UnitTests
             // Assert
             Assert.False(result);
         }
+  
+        [Fact]
+        public void TwoDifferentStrings_Returns_False()
+        {
+            // Arrange
+            string str1 = "alpha";
+            string str2 = "beta";
+
+            // Act
+            bool result = IsDeepEqual(str1, str2);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 }
