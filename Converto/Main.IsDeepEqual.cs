@@ -20,14 +20,18 @@ namespace Converto
             if (x == null || y == null)
                 return false;
 
-            var cachedType = GetCachedTypeInfo(typeof(T));
+            var leftType = x.GetType();
+            var equatableType = leftType.GetInterface(typeof(IEquatable<>).Name)?.GenericTypeArguments
+                .SingleOrDefault();
 
-            if (x is IEquatable<T>)
+            var rightType = y.GetType();
+
+            if (equatableType == rightType)
             {
                 return x.Equals(y);
             }
 
-            var properties = cachedType
+            var properties = GetCachedTypeInfo(typeof(T))
                 .Properties
                 .Where(p => p.CanRead);
 

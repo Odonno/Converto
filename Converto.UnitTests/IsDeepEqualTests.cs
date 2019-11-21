@@ -156,7 +156,21 @@ namespace Converto.UnitTests
             // Assert
             Assert.False(result);
         }
-  
+
+        [Fact]
+        public void TwoIdenticalStrings_Returns_True()
+        {
+            // Arrange
+            string str1 = "alpha";
+            string str2 = "alpha";
+
+            // Act
+            bool result = str1.IsDeepEqual(str2);
+
+            // Assert
+            Assert.True(result);
+        }
+
         [Fact]
         public void TwoDifferentStrings_Returns_False()
         {
@@ -210,6 +224,40 @@ namespace Converto.UnitTests
 
             // Act
             bool result = car1.IsDeepEqual(car2);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void TwoBoxedAndIdenticalStrings_Returns_True()
+        {
+            // Arrange
+            string str1 = "alpha";
+            string str2 = "alpha";
+
+            object o1 = (object)str1;
+            object o2 = (object)str2;
+
+            // Act
+            bool result = o1.IsDeepEqual(o2);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoBoxedAndDifferentStrings_Returns_False()
+        {
+            // Arrange
+            string str1 = "alpha";
+            string str2 = "beta";
+
+            object o1 = (object)str1;
+            object o2 = (object)str2;
+
+            // Act
+            bool result = o1.IsDeepEqual(o2);
 
             // Assert
             Assert.False(result);
