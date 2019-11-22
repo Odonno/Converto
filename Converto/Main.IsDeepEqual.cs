@@ -11,8 +11,11 @@ namespace Converto
         /// <typeparam name="T">The type of objects that are compared.</typeparam>
         /// <param name="x">First object to compare.</param>
         /// <param name="y">Second object to compare.</param>
+        /// <param name="checkStrictTypeEquality">
+        /// If enabled, ensures that the two objects have strictly the same type.
+        /// </param>
         /// <returns>Returns true if all properties of the object are the same.</returns>
-        public static bool IsDeepEqual<T>(this T x, T y) where T : class
+        public static bool IsDeepEqual<T>(this T x, T y, bool checkStrictTypeEquality = true) where T : class
         {
             if (x == y)
                 return true;
@@ -25,6 +28,14 @@ namespace Converto
                 .SingleOrDefault();
 
             var rightType = y.GetType();
+
+            if (checkStrictTypeEquality)
+            {
+                if (leftType != rightType)
+                {
+                    return false;
+                }
+            }
 
             if (equatableType == rightType)
             {

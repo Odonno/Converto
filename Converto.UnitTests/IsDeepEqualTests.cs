@@ -4,17 +4,26 @@ namespace Converto.UnitTests
 {
     public class IsDeepEqualTests
     {
-        public class Car
+        public abstract class Vehicle
         {
             public string Name { get; set; }
             public string Color { get; set; }
             public Owner Owner { get; set; }
         }
 
+        public class Car : Vehicle
+        {
+        }
+
         public class Owner
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }
+        }
+
+        public class Plane : Vehicle
+        {
+            public int Wings { get; set; }
         }
 
         [Fact]
@@ -292,6 +301,96 @@ namespace Converto.UnitTests
 
             // Act
             bool result = str1.IsDeepEqual(str2);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void TwoVehiclesWithDifferentTypesAndSameBaseTypeValues_WithoutTypeEquality_Returns_True()
+        {
+            // Arrange
+            Car car = new Car
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+            Plane plane = new Plane
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+
+            // Act
+            bool result = car.IsDeepEqual<Vehicle>(plane, false);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoVehiclesWithDifferentTypesAndDifferentBaseTypeValues_WithoutTypeEquality_Returns_True()
+        {
+            // Arrange
+            Car car = new Car
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+            Plane plane = new Plane
+            {
+                Name = "Name of the vehicle",
+                Color = "Red",
+                Wings = 2
+            };
+
+            // Act
+            bool result = car.IsDeepEqual<Vehicle>(plane, false);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoVehiclesWithDifferentTypesAndSameBaseTypeValues_WithTypeEquality_Returns_False()
+        {
+            // Arrange
+            Car car = new Car
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+            Plane plane = new Plane
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+
+            // Act
+            bool result = car.IsDeepEqual<Vehicle>(plane, false);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TwoVehiclesWithDifferentTypesAndDifferentBaseTypeValues_WithTypeEquality_Returns_False()
+        {
+            // Arrange
+            Car car = new Car
+            {
+                Name = "Name of the vehicle",
+                Color = "Red"
+            };
+            Plane plane = new Plane
+            {
+                Name = "Name of the vehicle",
+                Color = "Red",
+                Wings = 2
+            };
+
+            // Act
+            bool result = car.IsDeepEqual<Vehicle>(plane, true);
 
             // Assert
             Assert.False(result);
