@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace Converto.UnitTests
 {
@@ -11,6 +12,18 @@ namespace Converto.UnitTests
         }
 
         public class EmptyProps { }
+
+        public class Road
+        {
+            public int SpeedLimit { get; set; }
+            public List<Car> Cars { get; set; } = new List<Car>();
+        }
+        public class ComplexHighway
+        {
+            public Road LeftRoad { get; set; }
+            public Road MiddleRoad { get; set; }
+            public Road RightRoad { get; set; }
+        }
 
         [Fact]
         public void With_NullObject_Returns_NullObject()
@@ -108,6 +121,45 @@ namespace Converto.UnitTests
             Assert.Equal(car.Name, result.Name);
             Assert.Equal("Blue", result.Color);
             Assert.NotSame(car, result);
+        }
+        [Fact]
+        public void With_NestedObject()
+        {
+            // Arrange
+            var highway = new ComplexHighway
+            {
+                LeftRoad = new Road
+                {
+                    SpeedLimit = 40,
+                    Cars = new List<Car>
+                    {
+                        new Car
+                        {
+                            Name = "Red car",
+                            Color = "Red"
+                        }
+                    }
+                }
+            };
+
+            // Act
+            var result = highway
+                .With(new
+                {
+                    LeftRoad = highway.LeftRoad
+                        .With(new
+                        {
+                            SpeedLimit = 70
+                        })
+                });
+
+            // Assert
+            Assert.Equal(70, result.LeftRoad.SpeedLimit);
+            Assert.Single(result.LeftRoad.Cars);
+            Assert.Equal("Red car", result.LeftRoad.Cars[0].Name);
+            Assert.Equal("Red", result.LeftRoad.Cars[0].Color);
+            Assert.Null(result.MiddleRoad);
+            Assert.Null(result.RightRoad);
         }
     }
 }
