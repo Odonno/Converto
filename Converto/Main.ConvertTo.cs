@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Linq;
+using System.Text.Json;
 
 namespace Converto
 {
@@ -17,8 +17,8 @@ namespace Converto
             if (@object == null)
                 return default;
 
-            if (@object is JObject jsonObject)
-                return jsonObject.ToObject<T>();
+            if (@object is JsonDocument jsonDocument)
+                return JsonSerializer.Deserialize<T>(jsonDocument);
 
             var objectTypeInfo = GetCachedTypeInfo(@object.GetType());
             var targetTypeInfo = GetCachedTypeInfo(typeof(T));
@@ -38,6 +38,7 @@ namespace Converto
 
             return (T)result;
         }
+
         /// <summary>
         /// The TryConvertTo function allows you to create an object of a different type using the matching properties of another object.
         /// </summary>
